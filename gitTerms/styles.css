@@ -202,6 +202,8 @@ main {
   width: 100%;
   height: auto;
   display: block;
+  max-width: 320px; /* approximate iPhone 8 width */
+  margin: 0 auto;
 }
 
 .gallery-card .body {
