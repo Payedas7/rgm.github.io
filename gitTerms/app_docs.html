@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Screen Docs</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>RGM App • Screen Docs</span>
+      </div>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="hero">
+      <div>
+        <span class="pill">RGM App</span>
+        <h1>Screen Documentation</h1>
+        <p class="muted">Flows, logic, mechanisms, and error handling.</p>
+      </div>
+      <div class="callout">
+        This guide summarizes how key screens work in the Flutter app. Logic stays in the app code; this page is read-only.
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <aside class="toc">
+      <div class="surface">
+        <div class="muted-small">Navigate</div>
+        <ul>
+          <li><a href="#onboarding">Onboarding</a></li>
+          <li><a href="#contact">Contact & Profile</a></li>
+          <li><a href="#mentor">Mentor & Children</a></li>
+          <li><a href="#home">Home (Practice & Overview)</a></li>
+          <li><a href="#settings">Settings & TOTP MFA</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <article class="surface doc" id="onboarding">
+      <h2>Onboarding Screen</h2>
+      <h3>Flow</h3>
+      <ul>
+        <li>User provides first/last name, gender, DOB, status (initiated/ashraya/missionary/volunteer).</li>
+        <li>Validations enforce minimum length and required fields; DOB cannot be in the future.</li>
+        <li>Maps selections to ashraya level IDs and appGroup (FTM/VOL/none).</li>
+      </ul>
+      <h3>Logic & Mechanism</h3>
+      <ul>
+        <li>Status toggles set internal flags that feed into target calculation later.</li>
+        <li>Age calculation uses current date to derive ageYears.</li>
+      </ul>
+      <h3>Error Handling</h3>
+      <ul>
+        <li>Inline error strings for empty/short fields; Cupertino dialog for missing/invalid data.</li>
+        <li>DOB future check blocks continuation.</li>
+      </ul>
+      <h3>How It Works</h3>
+      <ul>
+        <li>On continue, builds a DevoteeDraft carrying basic profile/state for next screens.</li>
+        <li>Spiritual status maps: Initiated → Initiated targets; Ashraya levels → level-specific targets; Volunteer → volunteer targets; otherwise adult default.</li>
+        <li>Kid/youth handling: age &lt; 15 gets kids default; youth (≤18) in Ashraya get kid Ashraya targets (Shraddhavan/Sevak) with kirtan minutes.</li>
+      </ul>
+    </article>
+
+    <article class="surface doc" id="contact">
+      <h2>Contact & Profile Details</h2>
+      <h3>Flow</h3>
+      <ul>
+        <li>Collects email, phone/WhatsApp, address, education, course, university, graduation year, designation, company.</li>
+        <li>Country selection seeds dial code; user can override or remove it.</li>
+        <li>University picker shows a searchable bottom sheet; “Other” allows custom entry.</li>
+      </ul>
+      <h3>Logic & Mechanism</h3>
+      <ul>
+        <li>Phone formatter applies masks per country but respects custom “+” input.</li>
+        <li>University list filtered client-side; helper text shown inside the sheet.</li>
+      </ul>
+      <h3>Error Handling</h3>
+      <ul>
+        <li>Required fields set inline errors; ZIP/state/country sanity checks.</li>
+        <li>Phone digit length checked against country expectation.</li>
+      </ul>
+      <h3>How It Works</h3>
+      <ul>
+        <li>Builds DevoteeDraft with contact/education data; passes forward to mentor/credentials flows.</li>
+      </ul>
+    </article>
+
+    <article class="surface doc" id="mentor">
+      <h2>Mentor & Children Screen</h2>
+      <h3>Flow</h3>
+      <ul>
+        <li>Select mentor/guide (from Supabase mentors table, ordered by sort_order).</li>
+        <li>Add children/dependents with name, relation, gender, DOB, grade, Ashraya participation.</li>
+        <li>Toggle child consent for under-13 entries; optional Krishna Life flag maps appGroup.</li>
+      </ul>
+      <h3>Logic & Mechanism</h3>
+      <ul>
+        <li>Mentor/guide options fetched from Supabase; list filtered into roles.</li>
+        <li>Family members stored in DevoteeDraft JSON; Ashraya level and partOfAshraya influence targets.</li>
+        <li>Kids/youth (≤18) get kid targets; Ashraya kids get kid Ashraya targets (includes kirtan minutes).</li>
+        <li>Labeling updated to “Children” with “Add child profile.”</li>
+      </ul>
+      <h3>Error Handling</h3>
+      <ul>
+        <li>Validation for relation/gender consistency, DOB not future, required fields per member.</li>
+        <li>Consent required for under-13; dialog prompts on incomplete family rows.</li>
+      </ul>
+      <h3>How It Works</h3>
+      <ul>
+        <li>Final DevoteeDraft carries mentor/guide IDs, family JSON (with consent if under 13), and appGroup.</li>
+        <li>Kid targets: kids default (2 rounds, 20m reading/hearing, 15m kirtan), kid Ashraya Shraddhavan (2 rounds, 15m reading/hearing, 10m kirtan), kid Ashraya Sevak (4 rounds, 20m reading/hearing, 15m kirtan).</li>
+        <li>Youth Ashraya (≤18) with levels “shraddhavan”/“sevak” also receive kid Ashraya targets to include kirtan.</li>
+        <li>Non-Ashraya kids (under 15) use kids default targets (2 rounds, 20m reading/hearing, 15m kirtan, no seva/month). Adults not in Ashraya/initiated use the adult default (4 rounds, 30m reading/hearing, 6h seva/month). Volunteers use volunteer targets (0 rounds, 10m read/hear, 12h seva/month).</li>
+      </ul>
+    </article>
+
+    <article class="surface doc" id="home">
+      <h2>Home (Practice & Overview)</h2>
+      <h3>Flow</h3>
+      <ul>
+        <li>Profiles: primary + dependents (from family JSON; fallback to parent_id dependents if JSON empty).</li>
+        <li>Practice tab: Japa (toggle or time), reading/hearing, kirtan, seva, arati/guru-puja.</li>
+        <li>Overview tab: progress rings for rounds, association, seva; calendar tab loads Vaishnava days.</li>
+      </ul>
+      <h3>Logic & Mechanism</h3>
+      <ul>
+        <li>Targets resolved via getTargetsForPerson: initiated → initiated targets; youth (≤18) Ashraya → kid Ashraya targets; non-Ashraya kids → kids default.</li>
+        <li>Japa input: toggle rounds for youth/adult Shraddhavan/Sevak/Sadhak (and kids default); time entry for others.</li>
+        <li>Svadhyaya progress uses reading + hearing + kirtan (capped to target for OR-style sources like kids/default/ashraya).</li>
+        <li>Seva services loaded from Supabase table `seva_services` (active, ordered by sort_order); defaults used if fetch fails.</li>
+        <li>Spiritual status targets: Initiated (16 rounds, 30m read/hear, 24h seva/month), Ashraya levels (Shraddhavan 1 round /15m read/hear /2h seva; Sevak 4 rounds /20m read/hear /4h seva; Sadhak 8 rounds /30m read/hear /8h seva; Vandana 12 rounds /30m read/hear /12h seva; Upasak 16 rounds /45m read/hear /16h seva; Charanashraya 16 rounds /60m read/hear /20h seva; Full-time missionary 16 rounds /60m read/hear /40h seva).</li>
+        <li>Volunteer targets: 0 rounds, 10m read/hear, 12h seva/month. Adult default: 4 rounds, 30m read/hear, 6h seva/month. Initiated always uses initiated targets.</li>
+      </ul>
+      <h3>Error Handling</h3>
+      <ul>
+        <li>Mounted checks added around async calendar/seva fetches to avoid setState after dispose.</li>
+        <li>Supabase fetch failures fall back to local defaults (calendar sample, default seva list).</li>
+      </ul>
+      <h3>How It Works</h3>
+      <ul>
+        <li>Daily tracking saved per profile; progress rings average rounds/association/seva.</li>
+        <li>Calendar notifications scheduled from fetched or fallback data.</li>
+      </ul>
+    </article>
+
+    <article class="surface doc" id="settings">
+      <h2>Settings & TOTP MFA</h2>
+      <h3>Flow</h3>
+      <ul>
+        <li>Notifications toggle, legal links, about/support, sign out.</li>
+        <li>TOTP: enroll → show QR + URI + secret → verify code → enable; disable unenrolls factor.</li>
+      </ul>
+      <h3>Logic & Mechanism</h3>
+      <ul>
+        <li>Before enrolling, removes unverified TOTP factors and uses unique friendly names to avoid conflicts.</li>
+        <li>Shares TOTP URI via link copy/key copy/share (with sharePositionOrigin for iPad).</li>
+      </ul>
+      <h3>Error Handling</h3>
+      <ul>
+        <li>MFA errors surfaced via SnackBar; specific conflict messaging for existing TOTP.</li>
+        <li>Share failures handled with SnackBar; copy actions confirm via SnackBar.</li>
+      </ul>
+      <h3>How It Works</h3>
+      <ul>
+        <li>Uses Supabase MFA APIs (enroll, challenge, verify, list, unenroll).</li>
+        <li>Legal links point to hosted Privacy/Terms pages.</li>
+      </ul>
+    </article>
+  </main>
+</body>
+</html>

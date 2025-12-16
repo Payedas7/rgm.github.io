@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RGM App FAQ</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>RGM App • FAQ</span>
+      </div>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="app_docs.html">Docs</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="hero">
+      <div>
+        <span class="pill">Support</span>
+        <h1>Frequently Asked Questions</h1>
+        <p class="muted">Quick answers for setup, profiles, practice tracking, and MFA.</p>
+      </div>
+      <div class="callout">
+        Need more help? Use the in-app Support screen or email info@ihf-njny.org.
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <article class="surface doc">
+      <h2>General</h2>
+      <ul>
+        <li><strong>Q:</strong> What is the app for?<br><strong>A:</strong> Tracking japa, reading/hearing, seva, and temple programs aligned to Ashraya/Initiated/Volunteer goals.</li>
+        <li><strong>Q:</strong> Do I need an account?<br><strong>A:</strong> Yes, sign in with email/password; MFA is optional but recommended.</li>
+        <li><strong>Q:</strong> Can I use the app offline?<br><strong>A:</strong> You can log entries; they sync when online.</li>
+        <li><strong>Q:</strong> Where is my data stored?<br><strong>A:</strong> In Supabase (encrypted at rest) with optional local cache.</li>
+        <li><strong>Q:</strong> How do I reset my password?<br><strong>A:</strong> Use the Sign In screen “Forgot password” flow or contact support.</li>
+        <li><strong>Q:</strong> Can I change my email?<br><strong>A:</strong> Contact support; email changes require verification.</li>
+        <li><strong>Q:</strong> How do I sign out?<br><strong>A:</strong> Settings → Sign out.</li>
+        <li><strong>Q:</strong> How do I delete my account?<br><strong>A:</strong> Contact support to request deletion; deleting the app does not remove server data.</li>
+        <li><strong>Q:</strong> What is appGroup?<br><strong>A:</strong> A code (FTM/VOL/KL/FOLK) used for goals and access; set during onboarding/mentor flow.</li>
+        <li><strong>Q:</strong> Does the app send notifications?<br><strong>A:</strong> Optional daily reminders and calendar alerts; toggle in Settings.</li>
+      </ul>
+
+      <h2>Onboarding & Profile</h2>
+      <ul>
+        <li><strong>Q:</strong> What if my name is short?<br><strong>A:</strong> Minimum 3 characters for first/last name; add an initial if needed.</li>
+        <li><strong>Q:</strong> Can I skip DOB?<br><strong>A:</strong> DOB is required to set youth/adult targets; future dates are rejected.</li>
+        <li><strong>Q:</strong> How is age calculated?<br><strong>A:</strong> Based on DOB and today’s date; used for kid/youth targeting.</li>
+        <li><strong>Q:</strong> How are targets chosen?<br><strong>A:</strong> From spiritual status: Initiated → initiated targets; Ashraya levels → level targets; Volunteer → volunteer; otherwise adult default; kids/youth get kid targets.</li>
+        <li><strong>Q:</strong> What if I am Full-time Missionary?<br><strong>A:</strong> Select that status; targets update to FTM requirements.</li>
+        <li><strong>Q:</strong> How do I update address/education?<br><strong>A:</strong> Edit in the Contact/Profile flow (University sheet supports “Other”).</li>
+        <li><strong>Q:</strong> Phone formatting is off—can I type my own code?<br><strong>A:</strong> Yes. The dial code seeds the field, but typing “+…” overrides formatting.</li>
+        <li><strong>Q:</strong> Why does the country code reappear?<br><strong>A:</strong> It seeds when empty; if you keep a “+” code, auto-prefixing stops.</li>
+        <li><strong>Q:</strong> University not listed?<br><strong>A:</strong> Choose “Other” in the picker and enter it manually.</li>
+        <li><strong>Q:</strong> What if I select Krishna Life?<br><strong>A:</strong> appGroup is set to KL unless already defined.</li>
+      </ul>
+
+      <h2>Mentor & Children</h2>
+      <ul>
+        <li><strong>Q:</strong> How do I pick a mentor/guide?<br><strong>A:</strong> From the mentor list (active, ordered by sort_order) fetched from Supabase.</li>
+        <li><strong>Q:</strong> Can I add children?<br><strong>A:</strong> Yes, add child profiles with relation, DOB, grade, and Ashraya participation.</li>
+        <li><strong>Q:</strong> Under-13 consent?<br><strong>A:</strong> Required; consent stored with method/timestamp.</li>
+        <li><strong>Q:</strong> Ashraya level for kids?<br><strong>A:</strong> Youth ≤18 in Ashraya get kid Ashraya targets (Shraddhavan/Sevak) including kirtan minutes.</li>
+        <li><strong>Q:</strong> Non-Ashraya kids’ targets?<br><strong>A:</strong> Kids default: 2 rounds, 20m read/hear, 15m kirtan.</li>
+        <li><strong>Q:</strong> Why don’t all kids appear as separate rows?<br><strong>A:</strong> Family is stored in JSON; only dependents added as separate records (with parent_id) appear as rows.</li>
+        <li><strong>Q:</strong> Can I remove a child?<br><strong>A:</strong> Yes, delete the entry in the Children card; it’s removed from the draft JSON.</li>
+        <li><strong>Q:</strong> Does relation affect targets?<br><strong>A:</strong> No; age and Ashraya status drive targets.</li>
+        <li><strong>Q:</strong> Which icon text changed?<br><strong>A:</strong> Section reads “Children” with “Add child profile.”</li>
+        <li><strong>Q:</strong> Are mentors required?<br><strong>A:</strong> Yes; Ashraya kids also need level/partOfAshraya set for correct targets.</li>
+      </ul>
+
+      <h2>Home: Practice & Overview</h2>
+      <ul>
+        <li><strong>Q:</strong> How are daily targets set?<br><strong>A:</strong> Based on spiritual status, age, and Ashraya flags (kid default, kid Ashraya, adult Ashraya, initiated, volunteer, adult default).</li>
+        <li><strong>Q:</strong> Why do I see a Japa toggle?<br><strong>A:</strong> Youth/adult Shraddhavan/Sevak/Sadhak (and kids default) use a rounds toggle; others log completion time.</li>
+        <li><strong>Q:</strong> Kirtan toggle missing?<br><strong>A:</strong> Only shows if the target includes kirtan minutes; kid Ashraya and kids default include it.</li>
+        <li><strong>Q:</strong> How is Svadhyaya progress computed?<br><strong>A:</strong> Reading + hearing + kirtan, capped at target for OR profiles (kids/default/ashraya).</li>
+        <li><strong>Q:</strong> Why is the overview ring 50% when I logged reading + hearing?<br><strong>A:</strong> Progress sums reading + hearing + kirtan; for OR targets it caps at the daily target. Log enough minutes to reach the cap.</li>
+        <li><strong>Q:</strong> Seva list source?<br><strong>A:</strong> From Supabase `seva_services` (active, ordered); falls back to defaults if fetch fails.</li>
+        <li><strong>Q:</strong> How is overall progress calculated?<br><strong>A:</strong> Average of rounds, association, and seva progress.</li>
+        <li><strong>Q:</strong> Can I switch profiles?<br><strong>A:</strong> Yes; the dropdown selects primary or dependents.</li>
+        <li><strong>Q:</strong> Why no calendar events?<br><strong>A:</strong> If fetch fails, a fallback calendar is shown; mounted checks prevent errors on navigation.</li>
+        <li><strong>Q:</strong> How are notifications scheduled?<br><strong>A:</strong> Daily reminders and calendar alerts via NotificationService; rescheduled on init.</li>
+      </ul>
+
+      <h2>Seva Breakdown</h2>
+      <ul>
+        <li><strong>Q:</strong> Where do seva types come from?<br><strong>A:</strong> Supabase `seva_services` table; ordered by sort_order, active only.</li>
+        <li><strong>Q:</strong> What if the fetch fails?<br><strong>A:</strong> Defaults (cooking, cleaning, etc.) are used.</li>
+        <li><strong>Q:</strong> Can I edit hours per seva?<br><strong>A:</strong> Yes, in the breakdown sheet; totals roll into daily service hours.</li>
+        <li><strong>Q:</strong> Are seva hours per day or month?<br><strong>A:</strong> Progress uses a daily equivalent (monthly target / 30).</li>
+        <li><strong>Q:</strong> Is there a cap?<br><strong>A:</strong> Progress is clamped to the target for scoring.</li>
+        <li><strong>Q:</strong> How are changes saved?<br><strong>A:</strong> Saved with daily tracking for the selected profile.</li>
+        <li><strong>Q:</strong> Can I add new seva types?<br><strong>A:</strong> Add to `seva_services` in Supabase (code, name, sort_order, active).</li>
+        <li><strong>Q:</strong> Does seva affect notifications?<br><strong>A:</strong> No; it affects progress and statistics.</li>
+        <li><strong>Q:</strong> Do dependents share the same seva list?<br><strong>A:</strong> Yes, list is global; hours tracked per profile.</li>
+        <li><strong>Q:</strong> Why reset to zero?<br><strong>A:</strong> Daily entries reset on date change; weekly stats sum saved days.</li>
+      </ul>
+
+      <h2>MFA / TOTP</h2>
+      <ul>
+        <li><strong>Q:</strong> How to set up TOTP?<br><strong>A:</strong> Settings → Set up TOTP → scan QR or use link/key → enter code → verify.</li>
+        <li><strong>Q:</strong> On mobile, how to use the QR?<br><strong>A:</strong> Copy/share the TOTP link or key into your authenticator app.</li>
+        <li><strong>Q:</strong> Which apps support the link?<br><strong>A:</strong> Google/Microsoft Authenticator, 1Password, Duo, Authy (or paste key).</li>
+        <li><strong>Q:</strong> Conflict error when re-enrolling?<br><strong>A:</strong> The app removes unverified factors before enrolling and uses unique names; conflicts show a clear message.</li>
+        <li><strong>Q:</strong> Missing share plugin?<br><strong>A:</strong> Rebuild the app after adding `share_plus` and use the Share link button.</li>
+        <li><strong>Q:</strong> Share origin error on iPad?<br><strong>A:</strong> We pass sharePositionOrigin from the button to anchor the sheet.</li>
+        <li><strong>Q:</strong> Can I disable MFA?<br><strong>A:</strong> Yes, use “Disable MFA” to unenroll the factor.</li>
+        <li><strong>Q:</strong> What if I lose my device?<br><strong>A:</strong> Disable MFA via support or another logged-in session, then re-enroll.</li>
+        <li><strong>Q:</strong> Does TOTP affect other logins?<br><strong>A:</strong> Yes, MFA required for that account until disabled.</li>
+        <li><strong>Q:</strong> Are TOTP secrets stored?<br><strong>A:</strong> Supabase stores factors; the app surfaces the URI/secret only during setup.</li>
+      </ul>
+
+      <h2>Error Handling & Safety</h2>
+      <ul>
+        <li><strong>Q:</strong> Why “setState after dispose”?<br><strong>A:</strong> Mounted checks added for async loads (calendar/seva) to avoid this when navigating away.</li>
+        <li><strong>Q:</strong> Calendar not loading?<br><strong>A:</strong> Fallback sample calendar is shown; errors logged.</li>
+        <li><strong>Q:</strong> Supabase unavailable?<br><strong>A:</strong> Defaults are used (seva list, calendar); save attempts may fail silently.</li>
+        <li><strong>Q:</strong> Phone formatting issues?<br><strong>A:</strong> Type “+” to override; auto-prefix stops when you use your own code.</li>
+        <li><strong>Q:</strong> University selection help?<br><strong>A:</strong> Hint in the sheet directs to “Other” for missing entries.</li>
+        <li><strong>Q:</strong> MFA errors?<br><strong>A:</strong> SnackBars show details; conflicts instruct to verify/disable prior setup.</li>
+        <li><strong>Q:</strong> Missing mentor?<br><strong>A:</strong> Mentor is required; list fetched from Supabase (active only).</li>
+        <li><strong>Q:</strong> Child consent missing?<br><strong>A:</strong> Under-13 requires consent; dialog prevents continuation.</li>
+        <li><strong>Q:</strong> Progress not updating?<br><strong>A:</strong> Ensure correct profile selected; entries save per-profile per day.</li>
+        <li><strong>Q:</strong> How to report issues?<br><strong>A:</strong> Use the Support screen or email info@ihf-njny.org.</li>
+      </ul>
+    </article>
+  </main>
+</body>
+</html>

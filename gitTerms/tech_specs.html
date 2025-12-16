@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RGM App Tech Specs</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>RGM App • Tech Specs</span>
+      </div>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="app_docs.html">Docs</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="hero">
+      <div>
+        <span class="pill">Architecture</span>
+        <h1>Technical Specifications</h1>
+        <p class="muted">Screens, models, services, and end-to-end workflows.</p>
+      </div>
+      <div class="callout">
+        Flutter client + Supabase backend. Key modules, data contracts, and async flows are summarized below.
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <aside class="toc">
+      <div class="surface">
+        <div class="muted-small">Navigate</div>
+        <ul>
+          <li><a href="#arch">Architecture</a></li>
+          <li><a href="#screens">Screens</a></li>
+          <li><a href="#models">Models</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#workflows">Workflows</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <article class="surface doc" id="arch">
+      <h2>Architecture Overview</h2>
+      <div class="surface" style="margin-top:8px;padding:12px;">
+        <pre style="white-space:pre-wrap;font-family:monospace;font-size:12px;">
+Flutter UI
+  ├─ Screens (stateful widgets)
+  │    ├─ Onboarding, Contact, Mentor/Children
+  │    ├─ Home (Practice/Overview/Calendar)
+  │    └─ Settings (MFA, notifications)
+  ├─ Widgets (practice rows, cards, pickers)
+  └─ State mgmt: local setState + async calls
+
+Domain/Models
+  ├─ Devotee, DevoteeContext, DevoteeDraft
+  ├─ DailyTargets (target catalog)
+  └─ DailyTracking (per-day saved entries)
+
+Services
+  ├─ Supabase (auth, db, functions, MFA)
+  ├─ NotificationService (local notifications)
+  └─ StatisticsRepository (charts/stats)
+
+Backend (Supabase)
+  ├─ Tables: devotees, daily_tracking, mentors, seva_services
+  ├─ MFA via Supabase Auth (GoTrue)
+  └─ Edge functions: vaishnava_calendar
+        </pre>
+      </div>
+    </article>
+
+    <article class="surface doc" id="screens">
+      <h2>Screens</h2>
+      <h3>Onboarding</h3>
+      <ul>
+        <li>Collects name, gender, DOB, spiritual status; sets appGroup (FTM/VOL/KL/FOLK) and ashraya flags.</li>
+        <li>Age computed from DOB; targets derived via DevoteeContext → getTargetsForPerson.</li>
+      </ul>
+      <h3>Contact/Profile</h3>
+      <ul>
+        <li>Email, phone/WhatsApp, address, education, university picker (sheet with search + “Other”).</li>
+        <li>Phone formatter with auto dial code; custom “+” disables auto-prefix.</li>
+      </ul>
+      <h3>Mentor & Children</h3>
+      <ul>
+        <li>Mentor/guide from Supabase mentors (active, sort_order asc).</li>
+        <li>Children stored in family JSON with relation, DOB, grade, Ashraya participation, consent (<13).</li>
+        <li>Youth (≤18) Ashraya → kid Ashraya targets (includes kirtan minutes).</li>
+      </ul>
+      <h3>Home</h3>
+      <ul>
+        <li>Profiles: primary + dependents (family JSON; fallback to dependents with parent_id).</li>
+        <li>Practice: Japa rounds toggle (youth/adult Shraddhavan/Sevak/Sadhak + kids default) or completion time; reading/hearing; kirtan when target > 0; seva breakdown.</li>
+        <li>Overview: progress rings (rounds, association, seva) averaged; association uses read+hear+kirtan capped for OR targets.</li>
+        <li>Calendar: Vaishnava days from Edge function; fallback sample; mounted checks on async.</li>
+      </ul>
+      <h3>Settings</h3>
+      <ul>
+        <li>Notifications toggle; legal links; support/about; sign out.</li>
+        <li>MFA TOTP: enroll (unique friendly name, cleans unverified), show QR/URI/secret, copy/share, verify, disable.</li>
+      </ul>
+    </article>
+
+    <article class="surface doc" id="models">
+      <h2>Models & Targets</h2>
+      <ul>
+        <li><strong>Devotee</strong>: persisted user; includes familyMembers JSON, appGroup, ashraya flags.</li>
+        <li><strong>DevoteeDraft</strong>: in-memory onboarding aggregate passed between screens.</li>
+        <li><strong>DevoteeContext</strong>: ageYears, isInitiated, partOfAshraya, ashrayaLevel, isPrimaryDevotee.</li>
+        <li><strong>DailyTargets</strong>: per profile target catalog (rounds, reading/hearing, kirtan, seva, programs).</li>
+        <li><strong>DailyTracking</strong>: per-day entries saved to Supabase (rounds, time, reading/hearing minutes, kirtan minutes, seva hours breakdown, arati/guru-puja flags).</li>
+      </ul>
+      <h3>Target Resolution</h3>
+      <ul>
+        <li>Initiated → initiated targets (16 rounds, 30/30 read/hear, 24h seva/month).</li>
+        <li>Ashraya levels: Shraddhavan (1 round, 15/15, 2h), Sevak (4, 20/20, 4h), Sadhak (8, 30/30, 8h), Vandana (12, 30/30, 12h), Upasak (16, 45/45, 16h), Charanashraya (16, 60/60, 20h), Full-time Missionary (16, 60/60, 40h).</li>
+        <li>Volunteer: 0 rounds, 10/10 read/hear, 12h seva/month.</li>
+        <li>Adult default: 4 rounds, 30/30 read/hear, 6h seva/month.</li>
+        <li>Kids default (&lt;15, non-Ashraya): 2 rounds, 20/20 read/hear, 15m kirtan, 0h seva.</li>
+        <li>Kid Ashraya Shraddhavan: 2 rounds, 15/15, 10m kirtan, 2h seva.</li>
+        <li>Kid Ashraya Sevak: 4 rounds, 20/20, 15m kirtan, 4h seva.</li>
+        <li>Youth ≤18 in Ashraya (shraddhavan/sevak) also use kid Ashraya targets (keeps kirtan minutes).</li>
+      </ul>
+    </article>
+
+    <article class="surface doc" id="services">
+      <h2>Services & Data</h2>
+      <ul>
+        <li><strong>Supabase</strong>: Auth (email/password, MFA TOTP), Database (devotees, daily_tracking, mentors, seva_services), Edge functions (vaishnava_calendar).</li>
+        <li><strong>NotificationService</strong>: schedules daily reminders and calendar alerts; invoked on init/resume.</li>
+        <li><strong>StatisticsRepository</strong>: provides data for charts/stats (Statistics screen).</li>
+        <li><strong>Seva services</strong>: fetched from `seva_services` (code, name, sort_order, active); defaults used if fetch fails.</li>
+        <li><strong>MFA</strong>: listFactors, enroll (unique friendly name), challenge, verify, unenroll; unverified factors cleaned before enroll.</li>
+      </ul>
+    </article>
+
+    <article class="surface doc" id="workflows">
+      <h2>Workflows</h2>
+      <h3>Profile & Target Workflow</h3>
+      <div class="surface" style="margin-top:8px;padding:12px;">
+        <pre style="white-space:pre-wrap;font-family:monospace;font-size:12px;">
+Onboarding → Contact/University → Mentor/Children → Credentials
+  ↓ builds DevoteeDraft (status, age, appGroup, family JSON)
+Save to Supabase (devotees.familyMembers JSON, mentor/guide IDs)
+Home init:
+  - Load devotee by auth_id/email
+  - If family JSON empty, load dependents by parent_id
+  - Build DevoteeContext per profile → getTargetsForPerson
+  - Render Practice/Overview with resolved targets
+        </pre>
+      </div>
+      <h3>Practice Save Workflow</h3>
+      <div class="surface" style="margin-top:8px;padding:12px;">
+        <pre style="white-space:pre-wrap;font-family:monospace;font-size:12px;">
+User updates practice rows (rounds/time, reading/hearing, kirtan, seva, arati)
+  → setState (per profile) → _saveTracking()
+  → upsert daily_tracking (profile_key, date, rounds, japa_time, reading_minutes, hearing_minutes, kirtan_minutes, service_hours, seva_breakdown, flags)
+Overview progress:
+  roundsProgress: rounds / targetRounds
+  associationProgress: (read+hear+kirtan) / targetAssoc (capped for OR profiles)
+  sevaProgress: serviceHours / (targetSeva/30)
+  overall: average of three
+        </pre>
+      </div>
+      <h3>MFA TOTP Workflow</h3>
+      <div class="surface" style="margin-top:8px;padding:12px;">
+        <pre style="white-space:pre-wrap;font-family:monospace;font-size:12px;">
+Start setup:
+  - listFactors → unenroll unverified TOTP
+  - enroll totp (unique friendly name) → receive secret + uri + factorId
+  - show QR + URI + secret + copy/share buttons
+Verify:
+  - challenge(factorId) → challengeId
+  - verify(factorId, challengeId, code) → enable MFA
+Disable:
+  - unenroll(factorId)
+        </pre>
+      </div>
+      <h3>Calendar Workflow</h3>
+      <div class="surface" style="margin-top:8px;padding:12px;">
+        <pre style="white-space:pre-wrap;font-family:monospace;font-size:12px;">
+On init:
+  - call edge function vaishnava_calendar
+  - if fail/empty → fallback sample
+  - schedule notifications for days
+Mounted checks guard setState after navigation
+        </pre>
+      </div>
+      <h3>Seva Services Workflow</h3>
+      <div class="surface" style="margin-top:8px;padding:12px;">
+        <pre style="white-space:pre-wrap;font-family:monospace;font-size:12px;">
+On init:
+  - select * from seva_services where active = true order by sort_order
+  - replace default list; rebuild breakdown keys
+  - on failure, retain defaults
+User edits breakdown → save in daily_tracking for the selected profile
+        </pre>
+      </div>
+    </article>
+  </main>
+</body>
+</html>
