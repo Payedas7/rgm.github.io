@@ -184,17 +184,20 @@ main {
 
 .video-card {
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(124, 240, 212, 0.3);
   border-radius: 16px;
   box-shadow: var(--shadow);
   overflow: hidden;
-  margin-bottom: 18px;
+  margin: 0 auto 18px;
+  width: 75%;
+  max-width: 960px;
 }
 
 .video-card video {
   width: 100%;
   height: auto;
   display: block;
+  border-bottom: 1px solid rgba(124, 240, 212, 0.18);
 }
 
 .video-card .body {
