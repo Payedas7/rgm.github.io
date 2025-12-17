@@ -189,8 +189,8 @@ main {
   box-shadow: var(--shadow);
   overflow: hidden;
   margin: 0 auto 18px;
-  width: 75%;
-  max-width: 960px;
+  width: 390px; /* iPhone 12 width */
+  max-width: 90vw;
 }
 
 .video-card video {
