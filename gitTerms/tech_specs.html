@@ -52,6 +52,21 @@
 
     <article class="surface doc" id="arch">
       <h2>Architecture Overview</h2>
+      <p>
+        The app is a Flutter client backed by Supabase (auth + Postgres + edge functions). Practice tracking, profiles, and calendar data flow through Supabase, with local notifications for reminders. Below is a high-level architecture diagram:
+      </p>
+      <div class="surface" style="margin:12px 0;padding:12px;text-align:center;">
+        <img src="archDiagram/Enhanced_Spiritual_Tracking_App_Architecture.png" alt="App Architecture Diagram" style="max-width:100%;border-radius:12px;border:1px solid var(--border);" />
+      </div>
+      <h3>Release requirements (from current code)</h3>
+      <ul>
+        <li>Supabase project with URL + anon key (baked defaults in <code>main.dart</code>; overridable via <code>--dart-define</code>).</li>
+        <li>Supabase tables: <code>devotees</code> (familyMembers JSON, mentor/guide info), <code>daily_tracking</code> (practice logs), <code>mentors</code>, <code>seva_services</code>, and any edge function for <code>vaishnava_calendar</code> data.</li>
+        <li>Supabase Auth: email/password + optional TOTP MFA (GoTrue); factors enrollment/verification supported in Settings.</li>
+        <li>Local notifications: daily reminder + calendar alerts; on Android falls back to inexact alarms if exact alarms are not permitted.</li>
+        <li>iOS/Android build: iOS 13+; Android minSdk from Flutter defaults; App Store/Play builds include Supabase defaults; Android release signing configured via <code>key.properties</code>.</li>
+        <li>Data deletion: publish <code>data-deletion.html</code> link for Play/App Store forms.</li>
+      </ul>
       <div class="surface" style="margin-top:8px;padding:12px;">
         <pre style="white-space:pre-wrap;font-family:monospace;font-size:12px;">
 Flutter UI

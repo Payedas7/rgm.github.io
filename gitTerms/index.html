@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IHF NJNY | Legal</title>
+  <title>Radha Gopinath Mandir App • Spiritual Journey Tracker</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -11,44 +11,196 @@
     <div class="nav-inner">
       <div class="brand">
         <span class="dot"></span>
-        <span>IHF NJNY • Legal</span>
+        <span>Radha Gopinath Mandir App</span>
       </div>
       <div class="links">
-        <a href="index.html">Home</a>
-        <a href="terms.html">Terms</a>
-        <a href="privacy.html">Privacy</a>
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#support">Support</a>
+        <a href="data-deletion.html">Data Deletion</a>
       </div>
     </div>
   </nav>
 
-  <header>
-    <div class="hero">
-      <div>
-        <span class="pill">ihf-njny.org</span>
-        <h1>Legal Center</h1>
-        <p class="muted">Latest Terms of Service and Privacy Policy for India Heritage Foundation NJ/NY Inc.</p>
+  <section class="video-hero">
+    <div class="video-hero-inner">
+      <video autoplay loop muted playsinline preload="metadata" poster="assets/preview-poster.png">
+        <source src="video/App_Preview_02.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </section>
+
+  <header class="hero landing-hero">
+    <div>
+      <span class="pill">Spiritual journey tracker</span>
+      <h1>Guide your bhakti practice, keep family goals aligned, and never miss a sacred day.</h1>
+      <p class="muted">
+        Set daily goals, log practice, and stay synced with Vaishnava events—built for Radha Gopinath Mandir devotees and families.
+      </p>
+      <div class="cta-group">
+        <a class="btn primary" href="#" aria-label="App Store link">App Store</a>
+        <a class="btn ghost" href="#" aria-label="Play Store link">Play Store</a>
+        <a class="btn link" href="#features">See how it works</a>
       </div>
-      <div class="callout">
-        Updated September 25, 2024. These pages mirror your provided documents word for word.
+      <p class="tiny muted">Need help? <a href="mailto:info@ihf-njny.org">info@ihf-njny.org</a></p>
+    </div>
+    <div class="hero-card surface">
+      <p class="muted">Highlights</p>
+      <ul class="checklist">
+        <li>Daily goals for sādhanā, svādhyāya, seva</li>
+        <li>Family profiles for kids and parents</li>
+        <li>Vaishnava calendar with reminders</li>
+        <li>Biometric lock and optional TOTP MFA</li>
+      </ul>
+      <div class="badge-row">
+        <span class="pill">Secure</span>
+        <span class="pill">iOS & Android</span>
       </div>
     </div>
   </header>
 
-  <main>
-    <div class="surface doc" style="grid-column: span 2;">
-      <h2>Legal Documents</h2>
-      <p>View the latest terms for the Radha Gopinath Mandir (IHF NJNY) applications and services.</p>
-      <ul>
-        <li><a href="terms.html">Terms of Service</a></li>
-        <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="app_docs.html">App Screen Docs</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="tech_specs.html">Tech Specs & Architecture</a></li>
-        <li><a href="gallery.html">Screens Gallery</a></li>
-        <li><a href="data-deletion.html">Data Deletion Request</a></li>
-      </ul>
-      <p class="muted">Updated: September 25, 2024</p>
-    </div>
+  <main class="landing-main">
+    <section id="features" class="grid-3">
+      <div class="surface feature">
+        <div class="icon">📿</div>
+        <h3>Sādhanā</h3>
+        <p>Log Japa, arati attendance, and morning programs. See progress over time.</p>
+      </div>
+      <div class="surface feature">
+        <div class="icon">📚</div>
+        <h3>Svādhyāya</h3>
+        <p>Track reading and hearing minutes, books in progress, and kirtan practice.</p>
+      </div>
+      <div class="surface feature">
+        <div class="icon">🤝</div>
+        <h3>Seva</h3>
+        <p>Record seva hours, break down service types, and view weekly summaries.</p>
+      </div>
+      <div class="surface feature">
+        <div class="icon">🗓️</div>
+        <h3>Events & Reminders</h3>
+        <p>Vaishnava calendar with Ekadasi, temple events, and optional notifications.</p>
+      </div>
+      <div class="surface feature">
+        <div class="icon">🧸</div>
+        <h3>Family Profiles</h3>
+        <p>Create child profiles and set age-appropriate goals for the whole family.</p>
+      </div>
+      <div class="surface feature">
+        <div class="icon">🔒</div>
+        <h3>Secure Access</h3>
+        <p>Supabase auth, optional Face ID/Touch ID, and TOTP MFA for extra protection.</p>
+      </div>
+    </section>
+
+    <section id="privacy" class="surface wide">
+      <div class="section-header">
+        <div>
+          <p class="pill">Trust & Privacy</p>
+          <h2>Your data stays yours.</h2>
+          <p class="muted">We collect only what’s needed to run your account and goals.</p>
+        </div>
+        <div class="link-row">
+          <a class="btn ghost" href="privacy.html">Privacy Policy</a>
+          <a class="btn ghost" href="terms.html">Terms of Service</a>
+          <a class="btn ghost" href="data-deletion.html">Request Data Deletion</a>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <h4>What we store</h4>
+          <ul class="muted">
+            <li>Account/profile details (including family profiles)</li>
+            <li>Practice logs and goals</li>
+            <li>Notification preferences</li>
+          </ul>
+        </div>
+        <div>
+          <h4>How to delete</h4>
+          <p class="muted">
+            You can request account/data deletion anytime. We process verified requests within 30 days.
+          </p>
+          <a class="btn primary" href="data-deletion.html">Start a deletion request</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="support" class="surface wide">
+      <div class="section-header">
+        <div>
+          <p class="pill">Support</p>
+          <h2>We’re here to help.</h2>
+          <p class="muted">Questions or feedback? Reach out anytime.</p>
+        </div>
+        <div class="link-row">
+          <a class="btn primary" href="mailto:info@ihf-njny.org">Email support</a>
+          <a class="btn link" href="faq.html">FAQ</a>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="surface feature">
+          <div class="icon">📨</div>
+          <h3>Contact</h3>
+          <p class="muted">info@ihf-njny.org</p>
+        </div>
+        <div class="surface feature">
+          <div class="icon">🛡️</div>
+          <h3>Data Requests</h3>
+          <p class="muted"><a href="data-deletion.html">Delete or correct your data</a></p>
+        </div>
+        <div class="surface feature">
+          <div class="icon">📜</div>
+          <h3>Legal</h3>
+          <p class="muted">
+            <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources" class="surface wide">
+      <div class="section-header">
+        <div>
+          <p class="pill">Resources</p>
+          <h2>Dig deeper: docs, FAQs, and architecture.</h2>
+          <p class="muted">Quick links to everything your team and reviewers need.</p>
+        </div>
+      </div>
+      <div class="grid-4">
+        <a class="resource-card" href="app_docs.html">
+          <div class="icon">📱</div>
+          <h4>App Screen Docs</h4>
+          <p class="muted">Screens, flows, and UI notes for the mobile app.</p>
+        </a>
+        <a class="resource-card" href="faq.html">
+          <div class="icon">❓</div>
+          <h4>FAQ</h4>
+          <p class="muted">Common questions about usage and setup.</p>
+        </a>
+        <a class="resource-card" href="tech_specs.html">
+          <div class="icon">🛠️</div>
+          <h4>Tech Specs & Architecture</h4>
+          <p class="muted">Stack, integrations, and security details.</p>
+        </a>
+        <a class="resource-card" href="gallery.html">
+          <div class="icon">🖼️</div>
+          <h4>Screens Gallery</h4>
+          <p class="muted">Visual tour of key screens and flows.</p>
+        </a>
+        <a class="resource-card" href="developer_license.html">
+          <div class="icon">📜</div>
+          <h4>Developer License</h4>
+          <p class="muted">IP ownership and work-for-hire terms.</p>
+        </a>
+      </div>
+    </section>
   </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="muted">© 2025 Payel Das</span>
+    </div>
+  </footer>
 </body>
 </html>
